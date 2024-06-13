@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (categoriasContainer) {
         categoriasNomes.forEach(categoria => {
             const categoriaLink = document.createElement('a');
-            categoriaLink.href = 'categorias.html';
+            categoriaLink.href = `categorias.html?categoria=${encodeURIComponent(categoria)}`;
             categoriaLink.textContent = categoria;
             categoriasContainer.appendChild(categoriaLink);
         });
@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (postForm) {
         postForm.addEventListener('submit', function(event) {
             event.preventDefault();
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoria = urlParams.get('categoria');
             const nome = document.getElementById('nome').value || 'Anônimo';
             const titulo = document.getElementById('titulo').value;
             const comentario = document.getElementById('comentario').value;
@@ -54,17 +56,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     imagemUrl = e.target.result;
-                    adicionarPostagem(nome, titulo, comentario, imagemUrl);
+                    adicionarPostagem(categoria, nome, titulo, comentario, imagemUrl);
                 };
                 reader.readAsDataURL(imagemInput.files[0]);
             } else {
-                adicionarPostagem(nome, titulo, comentario, imagemUrl);
+                adicionarPostagem(categoria, nome, titulo, comentario, imagemUrl);
             }
         });
     }
 
     // Adicionar postagem
-    function adicionarPostagem(nome, titulo, comentario, imagemUrl) {
+    function adicionarPostagem(categoria, nome, titulo, comentario, imagemUrl) {
         const postagem = {
             nome: nome,
             titulo: titulo,
@@ -72,19 +74,19 @@ document.addEventListener('DOMContentLoaded', function() {
             imagemUrl: imagemUrl
         };
 
-        let postagens = JSON.parse(localStorage.getItem('postagens')) || [];
+        let postagens = JSON.parse(localStorage.getItem(categoria)) || [];
         postagens.push(postagem);
-        localStorage.setItem('postagens', JSON.stringify(postagens));
+        localStorage.setItem(categoria, JSON.stringify(postagens));
 
-        renderPostagens();
+        renderPostagens(categoria);
     }
 
     // Renderizar postagens
-    function renderPostagens() {
+    function renderPostagens(categoria) {
         const postagensLista = document.getElementById('postagensLista');
         if (postagensLista) {
             postagensLista.innerHTML = '';
-            const postagens = JSON.parse(localStorage.getItem('postagens')) || [];
+            const postagens = JSON.parse(localStorage.getItem(categoria)) || [];
 
             postagens.forEach(postagem => {
                 const postagemElement = document.createElement('div');
@@ -101,6 +103,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Carregar postagens na inicialização
-    renderPostagens();
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoria = urlParams.get('categoria');
+    if (categoria) {
+        document.getElementById('categoriaTitulo').textContent = categoria;
+        renderPostagens(categoria);
+    }
 });
 
