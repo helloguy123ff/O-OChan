@@ -1,35 +1,70 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+   <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categorias</title>
+    <title>21Chan - Categoria</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Categorias</h1>
-    </header>
-    <div class="postagem">
-        <h2>Nova Postagem</h2>
-        <form id="postForm">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome">
-            <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required>
-            <label for="imagem">Imagem:</label>
-            <input type="file" id="imagem" name="imagem" accept="image/*">
-            <label for="comentario">Comentário:</label>
-            <textarea id="comentario" name="comentario" required></textarea>
-            <button type="submit">Postar</button>
-        </form>
-    </div>
-    <div class="postagens">
-        <h2>Postagens</h2>
-        <div id="postagensLista">
-            <!-- Postagens serão adicionadas aqui -->
-        </div>
-    </div>
-    <script src="script.js"></script>
+    <h1 id="categoriaTitulo">Categoria</h1>
+    <div id="postsContainer"></div>
+    <h2>Criar Novo Tópico</h2>
+    <form id="novoPostForm">
+        <input type="text" id="titulo" placeholder="Título" required>
+        <textarea id="conteudo" placeholder="Conteúdo" required></textarea>
+        <input type="file" id="imagem" accept="image/*" required>
+        <button type="submit">Postar</button>
+    </form>
+
+  <script>
+          
+          document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoria = urlParams.get('categoria');
+
+    if (categoria) {
+        document.getElementById('categoriaTitulo').innerText = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+        carregarPosts(categoria);
+    }
+
+    document.getElementById('novoPostForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        criarNovoPost(categoria);
+    });
+});
+
+function carregarPosts(categoria) {
+    let postsContainer = document.getElementById('postsContainer');
+    let posts = JSON.parse(localStorage.getItem(categoria)) || [];
+    postsContainer.innerHTML = '';
+    posts.forEach(post => {
+        let postElement = document.createElement('div');
+        postElement.className = 'post';
+        postElement.innerHTML = `
+            <h3>${post.titulo}</h3>
+            <p>${post.conteudo}</p>
+            <img src="${post.imagem}" alt="Imagem do post">
+        `;
+        postsContainer.appendChild(postElement);
+    });
+}
+
+function criarNovoPost(categoria) {
+    let titulo = document.getElementById('titulo').value;
+    let conteudo = document.getElementById('conteudo').value;
+    let imagemInput = document.getElementById('imagem');
+    let imagem = URL.createObjectURL(imagemInput.files[0]);
+
+    let posts = JSON.parse(localStorage.getItem(categoria)) || [];
+    posts.push({ titulo, conteudo, imagem });
+    localStorage.setItem(categoria, JSON.stringify(posts));
+
+    carregarPosts(categoria);
+    document.getElementById('novoPostForm').reset();
+}
+</script>
+
+
 </body>
 </html>
