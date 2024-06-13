@@ -103,3 +103,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Carregar postagens na inicialização
     renderPostagens();
 });
+
