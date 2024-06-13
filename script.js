@@ -6,11 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Gerar categorias
     const categoriasContainer = document.querySelector('.categoria-lista');
-    for (let i = 1; i <= 100; i++) {
-        const categoriaLink = document.createElement('a');
-        categoriaLink.href = 'categorias.html';
-        categoriaLink.textContent = 'Categoria ' + i;
-        categoriasContainer.appendChild(categoriaLink);
+    if (categoriasContainer) {
+        for (let i = 1; i <= 100; i++) {
+            const categoriaLink = document.createElement('a');
+            categoriaLink.href = 'categorias.html';
+            categoriaLink.textContent = 'Categoria ' + i;
+            categoriasContainer.appendChild(categoriaLink);
+        }
     }
 
     // Handle form submission
@@ -40,14 +42,42 @@ document.addEventListener('DOMContentLoaded', function() {
     // Adicionar postagem
     function adicionarPostagem(nome, titulo, comentario, imagemUrl) {
         const postagensLista = document.getElementById('postagensLista');
-        const postagem = document.createElement('div');
-        postagem.className = 'postagem';
-        postagem.innerHTML = `
-            <h3>${titulo}</h3>
-            <p><strong>${nome}</strong></p>
-            <p>${comentario}</p>
-            ${imagemUrl ? `<img src="${imagemUrl}" alt="Imagem da postagem">` : ''}
-        `;
-        postagensLista.appendChild(postagem);
+        const postagem = {
+            nome: nome,
+            titulo: titulo,
+            comentario: comentario,
+            imagemUrl: imagemUrl
+        };
+
+        let postagens = JSON.parse(localStorage.getItem('postagens')) || [];
+        postagens.push(postagem);
+        localStorage.setItem('postagens', JSON.stringify(postagens));
+
+        renderPostagens();
     }
+
+    // Renderizar postagens
+    function renderPostagens() {
+        const postagensLista = document.getElementById('postagensLista');
+        if (postagensLista) {
+            postagensLista.innerHTML = '';
+            const postagens = JSON.parse(localStorage.getItem('postagens')) || [];
+
+            postagens.forEach(postagem => {
+                const postagemElement = document.createElement('div');
+                postagemElement.className = 'postagem';
+                postagemElement.innerHTML = `
+                    <h3>${postagem.titulo}</h3>
+                    <p><strong>${postagem.nome}</strong></p>
+                    <p>${postagem.comentario}</p>
+                    ${postagem.imagemUrl ? `<img src="${postagem.imagemUrl}" alt="Imagem da postagem">` : ''}
+                `;
+                postagensLista.appendChild(postagemElement);
+            });
+        }
+    }
+
+    // Carregar postagens na inicialização
+    renderPostagens();
 });
+
