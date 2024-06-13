@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header img {
+    display: block;
+    margin: 0 auto;
+}
+
+.msgbox {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin: 20px;
+    position: relative;
+}
+
+.msgbox button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.categorias {
+    margin: 20px;
+}
+
+.categoria-lista {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.categoria-lista a {
+    display: block;
+    width: 20%;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    background-color: #f0f0f0;
+    margin: 5px;
+    text-decoration: none;
+    color: black;
+    border: 1px solid #ccc;
+}
+
+.postagem {
+    margin: 20px;
+}
+
+.postagens {
+    margin: 20px;
+}
