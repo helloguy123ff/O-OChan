@@ -24,5 +24,29 @@
         </div>
     </div>
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const categorias = ["Anime", "Manga", "Tecnologia", "Jogos", "Esportes", "Filmes", "Música", "Literatura", "Culinária", "Viagens"];
+
+            // Fechar a msgbox
+            window.fecharMsgbox = function () {
+                document.getElementById('msgbox').style.display = 'none';
+                // bomdia
+            };
+
+            // Carregar categorias na página inicial
+            const categoriaLista = document.getElementById('categoria-lista');
+            if (categoriaLista) {
+                categorias.forEach(categoria => {
+                    const categoriaLink = document.createElement('a');
+                    categoriaLink.href = `categorias.html?categoria=${categoria}`;
+                    categoriaLink.textContent = categoria;
+                    categoriaLista.appendChild(categoriaLink);
+                    // bomdia
+                });
+            }
+        });
+    </script>
 </body>
 </html>
+
