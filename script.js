@@ -22,10 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
         "Podcast", "Audiolivros", "E-books", "Aplicativos", "Redes Sociais"
     ];
 
-   // Fechar a msgbox
+ // Fechar a msgbox
     window.fecharMsgbox = function () {
         document.getElementById('msgbox').style.display = 'none';
-        // bomdia
     };
 
     // Carregar categorias na página inicial
@@ -36,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
             categoriaLink.href = `categorias.html?categoria=${categoria}`;
             categoriaLink.textContent = categoria;
             categoriaLista.appendChild(categoriaLink);
-            // bomdia
         });
     }
 
@@ -63,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p><strong>${post.nome}</strong></p>
                 <p>${post.comentario}</p>
                 ${post.imagem ? `<img src="${post.imagem}" alt="Imagem da postagem">` : ''}
-                <!-- bomdia -->
             `;
 
             postagensLista.appendChild(postagemDiv);
@@ -73,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
         postForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            const fileInput = postForm.imagem;
+            const fileInput = postForm.imagem.files[0];
             const reader = new FileReader();
 
             reader.onload = function (event) {
@@ -83,4 +80,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     comentario: postForm.comentario.value,
                     imagem: event.target.result,
                     categoria: categoriaNome
-                   
+                };
+
+                postagens.push(novaPostagem);
+                localStorage.setItem('postagens', JSON.stringify(postagens));
+
+                const postagemDiv = document.createElement('div');
+                postagemDiv.className = 'postagem';
+
+                postagemDiv.innerHTML = `
+                    <h3>${novaPostagem.titulo}</h3>
+                    <p><strong>${novaPostagem.nome}</strong></p>
+                    <p>${novaPostagem.comentario}</p>
+                    ${novaPostagem.imagem ? `<img src="${novaPostagem.imagem}" alt="Imagem da postagem">` : ''}
+                `;
+
+                postagensLista.appendChild(postagemDiv);
+            };
+
+            reader.readAsDataURL(fileInput);
+        });
+    }
+});
