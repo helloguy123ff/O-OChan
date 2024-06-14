@@ -1,17 +1,26 @@
+/* Estilos gerais */
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #d3d3d3, #ffffff); /* Gradiente de cinza para branco */
 }
 
-header img {
-    display: block;
-    margin: 0 auto;
+/* Estilos do cabeçalho */
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ccc;
 }
 
+/* Estilos da msgbox */
 .msgbox {
+    background-color: #fff;
     border: 1px solid #ccc;
-    padding: 10px;
-    background-color: #f9f9f9;
+    padding: 20px;
     margin: 20px;
+    text-align: center;
     position: relative;
 }
 
@@ -21,32 +30,50 @@ header img {
     right: 10px;
 }
 
+/* Estilos das categorias */
 .categorias {
-    margin: 20px;
-}
-
-.categoria-lista {
-    display: flex;
-    flex-wrap: wrap;
+    padding: 20px;
+    text-align: center;
 }
 
 .categoria-lista a {
-    display: block;
-    width: 20%;
-    padding: 10px;
-    box-sizing: border-box;
-    text-align: center;
-    background-color: #f0f0f0;
-    margin: 5px;
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 15px;
+    background-color: #eee;
+    color: #333;
     text-decoration: none;
-    color: black;
-    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
+.categoria-lista a:hover {
+    background-color: #ddd;
+}
+
+/* Estilos das postagens */
 .postagem {
     margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.postagem h2, .postagem h3 {
+    margin-top: 0;
 }
 
 .postagens {
-    margin: 20px;
+    padding: 20px;
+}
+
+.postagens .postagem {
+    margin-bottom: 20px;
+}
+
+.postagens .postagem img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 10px;
 }
