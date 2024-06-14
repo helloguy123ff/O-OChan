@@ -21,8 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         "Tutoriais", "Resenhas", "Opiniões", "Críticas", "Entrevistas",
         "Podcast", "Audiolivros", "E-books", "Aplicativos", "Redes Sociais"
     ];
-
- // Fechar a msgbox
+   // Fechar a msgbox
     window.fecharMsgbox = function () {
         document.getElementById('msgbox').style.display = 'none';
     };
