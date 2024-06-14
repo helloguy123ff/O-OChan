@@ -1,12 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Fechar a msgbox
-    window.fecharMsgbox = function() {
-        document.getElementById('msgbox').style.display = 'none';
-    };
 
-    // Lista de nomes de categorias
-    const categoriasNomes = [
-        "Anime", "Manga", "Tecnologia", "Jogos", "Esportes",
+document.addEventListener('DOMContentLoaded', function () {
+const categorias = ["Anime", "Manga", "Tecnologia", "Jogos", "Esportes",
         "Filmes", "Música", "Literatura", "Culinária", "Viagens",
         "Ciência", "História", "Arte", "Fotografia", "Moda",
         "Natureza", "Carros", "Saúde", "Fitness", "Política",
@@ -28,86 +22,81 @@ document.addEventListener('DOMContentLoaded', function() {
         "Podcast", "Audiolivros", "E-books", "Aplicativos", "Redes Sociais"
     ];
 
-    // Gerar categorias
-    const categoriasContainer = document.querySelector('.categoria-lista');
-    if (categoriasContainer) {
-        categoriasNomes.forEach(categoria => {
+ // Fechar a msgbox
+    window.fecharMsgbox = function () {
+        document.getElementById('msgbox').style.display = 'none';
+        // bomdia
+    };
+
+    // Carregar categorias na página inicial
+    const categoriaLista = document.getElementById('categoria-lista');
+    if (categoriaLista) {
+        categorias.forEach(categoria => {
             const categoriaLink = document.createElement('a');
-            categoriaLink.href = `categorias.html?categoria=${encodeURIComponent(categoria)}`;
+            categoriaLink.href = `categorias.html?categoria=${categoria}`;
             categoriaLink.textContent = categoria;
-            categoriasContainer.appendChild(categoriaLink);
+            categoriaLista.appendChild(categoriaLink);
+            // bomdia
         });
     }
 
-    // Handle form submission
+    // Gerenciar postagens na página de categorias
     const postForm = document.getElementById('postForm');
-    if (postForm) {
-        postForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const urlParams = new URLSearchParams(window.location.search);
-            const categoria = urlParams.get('categoria');
-            const nome = document.getElementById('nome').value || 'Anônimo';
-            const titulo = document.getElementById('titulo').value;
-            const comentario = document.getElementById('comentario').value;
-            const imagemInput = document.getElementById('imagem');
-            let imagemUrl = '';
+    const postagensLista = document.getElementById('postagensLista');
+    const categoriaTitulo = document.getElementById('categoriaTitulo');
 
-            if (imagemInput.files && imagemInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagemUrl = e.target.result;
-                    adicionarPostagem(categoria, nome, titulo, comentario, imagemUrl);
-                };
-                reader.readAsDataURL(imagemInput.files[0]);
-            } else {
-                adicionarPostagem(categoria, nome, titulo, comentario, imagemUrl);
-            }
+    if (postForm && postagensLista && categoriaTitulo) {
+        const params = new URLSearchParams(window.location.search);
+        const categoriaNome = params.get('categoria');
+        categoriaTitulo.textContent = categoriaNome;
+
+        // Carregar postagens do localStorage
+        const postagens = JSON.parse(localStorage.getItem('postagens')) || [];
+        const postagensFiltradas = postagens.filter(post => post.categoria === categoriaNome);
+
+        postagensFiltradas.forEach(post => {
+            const postagemDiv = document.createElement('div');
+            postagemDiv.className = 'postagem';
+
+            postagemDiv.innerHTML = `
+                <h3>${post.titulo}</h3>
+                <p><strong>${post.nome}</strong></p>
+                <p>${post.comentario}</p>
+                ${post.imagem_url ? `<img src="${post.imagem_url}" alt="Imagem da postagem">` : ''}
+                <!-- bomdia -->
+            `;
+
+            postagensLista.appendChild(postagemDiv);
         });
-    }
 
-    // Adicionar postagem
-    function adicionarPostagem(categoria, nome, titulo, comentario, imagemUrl) {
-        const postagem = {
-            nome: nome,
-            titulo: titulo,
-            comentario: comentario,
-            imagemUrl: imagemUrl
-        };
+        // Adicionar nova postagem
+        postForm.addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        let postagens = JSON.parse(localStorage.getItem(categoria)) || [];
-        postagens.push(postagem);
-        localStorage.setItem(categoria, JSON.stringify(postagens));
+            const novaPostagem = {
+                nome: postForm.nome.value || 'Anônimo',
+                titulo: postForm.titulo.value,
+                comentario: postForm.comentario.value,
+                imagem_url: postForm.imagem.value,
+                categoria: categoriaNome
+                // bomdia
+            };
 
-        renderPostagens(categoria);
-    }
+            postagens.push(novaPostagem);
+            localStorage.setItem('postagens', JSON.stringify(postagens));
 
-    // Renderizar postagens
-    function renderPostagens(categoria) {
-        const postagensLista = document.getElementById('postagensLista');
-        if (postagensLista) {
-            postagensLista.innerHTML = '';
-            const postagens = JSON.parse(localStorage.getItem(categoria)) || [];
+            const postagemDiv = document.createElement('div');
+            postagemDiv.className = 'postagem';
 
-            postagens.forEach(postagem => {
-                const postagemElement = document.createElement('div');
-                postagemElement.className = 'postagem';
-                postagemElement.innerHTML = `
-                    <h3>${postagem.titulo}</h3>
-                    <p><strong>${postagem.nome}</strong></p>
-                    <p>${postagem.comentario}</p>
-                    ${postagem.imagemUrl ? `<img src="${postagem.imagemUrl}" alt="Imagem da postagem">` : ''}
-                `;
-                postagensLista.appendChild(postagemElement);
-            });
-        }
-    }
+            postagemDiv.innerHTML = `
+                <h3>${novaPostagem.titulo}</h3>
+                <p><strong>${novaPostagem.nome}</strong></p>
+                <p>${novaPostagem.comentario}</p>
+                ${novaPostagem.imagem_url ? `<img src="${novaPostagem.imagem_url}" alt="Imagem da postagem">` : ''}
+                <!-- bomdia -->
+            `;
 
-    // Carregar postagens na inicialização
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoria = urlParams.get('categoria');
-    if (categoria) {
-        document.getElementById('categoriaTitulo').textContent = categoria;
-        renderPostagens(categoria);
+            postagensLista.appendChild(postagemDiv);
+        });
     }
 });
-
