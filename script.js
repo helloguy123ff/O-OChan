@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         "Podcast", "Audiolivros", "E-books", "Aplicativos", "Redes Sociais"
     ];
 
- // Fechar a msgbox
+   // Fechar a msgbox
     window.fecharMsgbox = function () {
         document.getElementById('msgbox').style.display = 'none';
         // bomdia
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <h3>${post.titulo}</h3>
                 <p><strong>${post.nome}</strong></p>
                 <p>${post.comentario}</p>
-                ${post.imagem_url ? `<img src="${post.imagem_url}" alt="Imagem da postagem">` : ''}
+                ${post.imagem ? `<img src="${post.imagem}" alt="Imagem da postagem">` : ''}
                 <!-- bomdia -->
             `;
 
@@ -73,27 +73,14 @@ document.addEventListener('DOMContentLoaded', function () {
         postForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            const novaPostagem = {
-                nome: postForm.nome.value || 'Anônimo',
-                titulo: postForm.titulo.value,
-                comentario: postForm.comentario.value,
-                imagem_url: postForm.imagem.value,
-                categoria: categoriaNome
-                // bomdia
-            };
+            const fileInput = postForm.imagem;
+            const reader = new FileReader();
 
-            postagens.push(novaPostagem);
-            localStorage.setItem('postagens', JSON.stringify(postagens));
-
-            const postagemDiv = document.createElement('div');
-            postagemDiv.className = 'postagem';
-
-            postagemDiv.innerHTML = `
-                <h3>${novaPostagem.titulo}</h3>
-                <p><strong>${novaPostagem.nome}</strong></p>
-                <p>${novaPostagem.comentario}</p>
-                ${novaPostagem.imagem_url ? `<img src="${novaPostagem.imagem_url}" alt="Imagem da postagem">` : ''}
-                <!-- bomdia -->
-            `;
-
-            postagensLista.appendChild(postagemDiv);
+            reader.onload = function (event) {
+                const novaPostagem = {
+                    nome: postForm.nome.value || 'Anônimo',
+                    titulo: postForm.titulo.value,
+                    comentario: postForm.comentario.value,
+                    imagem: event.target.result,
+                    categoria: categoriaNome
+                   
