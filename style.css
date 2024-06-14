@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background: linear-gradient(to bottom, #d3d3d3, #ffffff); /* Gradiente de cinza para branco */
+    /* bomdia */
 }
 
 /* Estilos do cabeçalho */
@@ -12,6 +13,7 @@ header {
     padding: 20px;
     background-color: #ffffff;
     border-bottom: 1px solid #ccc;
+    /* bomdia */
 }
 
 /* Estilos da msgbox */
@@ -22,18 +24,21 @@ header {
     margin: 20px;
     text-align: center;
     position: relative;
+    /* bomdia */
 }
 
 .msgbox button {
     position: absolute;
     top: 10px;
     right: 10px;
+    /* bomdia */
 }
 
 /* Estilos das categorias */
 .categorias {
     padding: 20px;
     text-align: center;
+    /* bomdia */
 }
 
 .categoria-lista a {
@@ -43,37 +48,67 @@ header {
     background-color: #eee;
     color: #333;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 4px;
+    /* bomdia */
 }
 
-.categoria-lista a:hover {
-    background-color: #ddd;
-}
-
-/* Estilos das postagens */
-.postagem {
+/* Estilos da página de categorias */
+.postagem, .postagens {
     margin: 20px;
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    /* bomdia */
 }
 
-.postagem h2, .postagem h3 {
-    margin-top: 0;
+.postagem form {
+    display: flex;
+    flex-direction: column;
+    /* bomdia */
 }
 
-.postagens {
-    padding: 20px;
+.postagem label {
+    margin: 10px 0 5px;
+    /* bomdia */
+}
+
+.postagem input, .postagem textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    /* bomdia */
+}
+
+.postagem button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* bomdia */
+}
+
+.postagem button:hover {
+    background-color: #0056b3;
+    /* bomdia */
 }
 
 .postagens .postagem {
     margin-bottom: 20px;
+    /* bomdia */
+}
+
+.postagens .postagem h3 {
+    margin: 0 0 10px;
+    /* bomdia */
 }
 
 .postagens .postagem img {
     max-width: 100%;
     height: auto;
-    display: block;
     margin-top: 10px;
+    /* bomdia */
 }
+
