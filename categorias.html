@@ -33,5 +33,67 @@
         </div>
     </div>
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const postForm = document.getElementById('postForm');
+            const postagensLista = document.getElementById('postagensLista');
+            const categoriaTitulo = document.getElementById('categoriaTitulo');
+
+            if (postForm && postagensLista && categoriaTitulo) {
+                const params = new URLSearchParams(window.location.search);
+                const categoriaNome = params.get('categoria');
+                categoriaTitulo.textContent = categoriaNome;
+
+                // Carregar postagens do localStorage
+                const postagens = JSON.parse(localStorage.getItem('postagens')) || [];
+                const postagensFiltradas = postagens.filter(post => post.categoria === categoriaNome);
+
+                postagensFiltradas.forEach(post => {
+                    const postagemDiv = document.createElement('div');
+                    postagemDiv.className = 'postagem';
+
+                    postagemDiv.innerHTML = `
+                        <h3>${post.titulo}</h3>
+                        <p><strong>${post.nome}</strong></p>
+                        <p>${post.comentario}</p>
+                        ${post.imagem_url ? `<img src="${post.imagem_url}" alt="Imagem da postagem">` : ''}
+                        <!-- bomdia -->
+                    `;
+
+                    postagensLista.appendChild(postagemDiv);
+                });
+
+                // Adicionar nova postagem
+                postForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    const novaPostagem = {
+                        nome: postForm.nome.value || 'Anônimo',
+                        titulo: postForm.titulo.value,
+                        comentario: postForm.comentario.value,
+                        imagem_url: postForm.imagem.value,
+                        categoria: categoriaNome
+                        // bomdia
+                    };
+
+                    postagens.push(novaPostagem);
+                    localStorage.setItem('postagens', JSON.stringify(postagens));
+
+                    const postagemDiv = document.createElement('div');
+                    postagemDiv.className = 'postagem';
+
+                    postagemDiv.innerHTML = `
+                        <h3>${novaPostagem.titulo}</h3>
+                        <p><strong>${novaPostagem.nome}</strong></p>
+                        <p>${novaPostagem.comentario}</p>
+                        ${novaPostagem.imagem_url ? `<img src="${novaPostagem.imagem_url}" alt="Imagem da postagem">` : ''}
+                        <!-- bomdia -->
+                    `;
+
+                    postagensLista.appendChild(postagemDiv);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
